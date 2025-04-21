@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PandaBoard - Login</title>
+  <script type="module" src="auth.js"></script>
+</head>
+<body>
+  <h1>Login to PandaBoard</h1>
+
+  <!-- Login form -->
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <!-- Anonymous login button -->
+  <button id="anonLoginButton">Login Anonymously</button>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      loginUser(email, password);
+    });
+
+    document.getElementById('anonLoginButton').addEventListener('click', function() {
+      loginAnonymously();
+    });
+  </script>
+</body>
+</html>
