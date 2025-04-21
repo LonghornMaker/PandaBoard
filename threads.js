@@ -1,16 +1,27 @@
-import { db } from "./firebase-config.js";
-import { ref, set, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import { db, storage } from "./firebase-config.js";
+import {
+  ref as dbRef,
+  set,
+  push,
+  serverTimestamp,
+  remove
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
-// Función para guardar un nuevo thread en la base de datos
+// Function to create a new thread in the database
 export function createThread(content, user, imageURL = null) {
-  const threadRef = ref(db, 'threads/');  // Ref de los threads en la base de datos
-  const newThreadRef = push(threadRef);  // Crear una nueva referencia para un thread
+  const threadsRef = dbRef(db, 'threads/');
+  const newThreadRef = push(threadsRef);
 
   set(newThreadRef, {
     content: content,
-    author: user,
-    timestamp: serverTimestamp(),  // Marca de tiempo de la creación
-    image: imageURL,  // URL de la imagen (si la hay)
+    author: user || "Anonymous",
+    timestamp: Date.now(),
+    image: imageURL || null
   }).then(() => {
     console.log('Thread created successfully!');
   }).catch((error) => {
@@ -18,24 +29,21 @@ export function createThread(content, user, imageURL = null) {
   });
 }
 
-// Función para subir una imagen a Firebase Storage
+// Function to upload an image to Firebase Storage
 export function uploadImage(file) {
-  const storageReference = storageRef(storage, 'images/' + file.name); // Referencia para la imagen
-  return uploadBytes(storageReference, file)
+  const imageRef = storageRef(storage, 'images/' + file.name);
+  return uploadBytes(imageRef, file)
     .then((snapshot) => {
-      return getDownloadURL(snapshot.ref);  // Obtiene la URL de la imagen subida
+      return getDownloadURL(snapshot.ref);
     })
     .catch((error) => {
       console.error('Error uploading image:', error);
     });
 }
 
-import { db } from "./firebase-config.js";
-import { ref, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
-// Función para borrar un thread
+// Function to delete a thread by ID
 export function deleteThread(threadId) {
-  const threadRef = ref(db, 'threads/' + threadId);
+  const threadRef = dbRef(db, 'threads/' + threadId);
   remove(threadRef)
     .then(() => {
       console.log("Thread deleted successfully!");
