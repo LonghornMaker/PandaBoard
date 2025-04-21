@@ -21,3 +21,8 @@ const app = initializeApp(firebaseConfig);
 // Exporta base de datos y autenticación
 export const db = getDatabase(app);
 export const auth = getAuth(app);
+
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+// Configuración de Firebase Storage
+export const storage = getStorage(app);  // Inicializa Firebase Storage
