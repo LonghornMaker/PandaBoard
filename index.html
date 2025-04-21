@@ -1,8 +1,9 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PandaBoard - Anonymous Message Board</title>
   <style>
     body {
@@ -47,11 +48,6 @@
       border-radius: 5px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
-    img {
-      max-width: 100%;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
   </style>
 </head>
 <body>
@@ -60,49 +56,34 @@
     <p>A safe, anonymous space for respectful discussion.</p>
   </header>
 
-  <!-- Formulario para crear nuevo thread -->
   <div class="post-form">
     <h3>Create a new thread</h3>
     <form id="newPost">
-      <input type="text" id="author" placeholder="Your name or alias (optional)">
+      <input type="text" id="title" placeholder="Thread title" required>
       <textarea id="content" placeholder="Write your message here" rows="4" required></textarea>
-      <input type="file" id="imageInput" accept="image/*">
       <button type="submit">Post</button>
     </form>
   </div>
 
-  <!-- Contenedor para mostrar threads -->
   <div id="threadsContainer"></div>
 
-  <!-- Scripts -->
-  <script type="module">
-    import { createThread, uploadImage } from "./threads.js";
-    import { displayThreads } from "./displayThreads.js";
+  <script type="module" src="threads.js"></script>
+  <script type="module" src="displayThreads.js"></script>
 
-    // Cargar threads
-    displayThreads();
-
-    // Manejar nuevo post
-    const form = document.getElementById("newPost");
-    const contentInput = document.getElementById("content");
-    const authorInput = document.getElementById("author");
-    const imageInput = document.getElementById("imageInput");
-
-    form.addEventListener("submit", async (e) => {
+  <script>
+    // Handling form submission to create a new thread
+    const form = document.getElementById('newPost');
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const content = contentInput.value.trim();
-      const author = authorInput.value.trim() || "Anonymous";
-      const file = imageInput.files[0];
+      const title = document.getElementById('title').value.trim();
+      const content = document.getElementById('content').value.trim();
 
-      if (!content) return;
-
-      let imageURL = null;
-      if (file) {
-        imageURL = await uploadImage(file);
+      if (title && content) {
+        // Create the thread and reload the threads
+        await createThread(title, content);
+        displayThreads(); // Reload the threads
+        form.reset();
       }
-
-      createThread(content, author, imageURL);
-      form.reset();
     });
   </script>
 </body>
