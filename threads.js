@@ -29,3 +29,18 @@ export function uploadImage(file) {
       console.error('Error uploading image:', error);
     });
 }
+
+import { db } from "./firebase-config.js";
+import { ref, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+// Función para borrar un thread
+export function deleteThread(threadId) {
+  const threadRef = ref(db, 'threads/' + threadId);
+  remove(threadRef)
+    .then(() => {
+      console.log("Thread deleted successfully!");
+    })
+    .catch((error) => {
+      console.error("Error deleting thread:", error);
+    });
+}
