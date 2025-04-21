@@ -1,0 +1,91 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PandaBoard - Anonymous Message Board</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .post-form {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    input, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .thread {
+      background: white;
+      margin: 20px auto;
+      max-width: 500px;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PandaBoard</h1>
+    <p>A safe, anonymous space for respectful discussion.</p>
+  </header>
+
+  <div class="post-form">
+    <h3>Create a new thread</h3>
+    <form id="newPost">
+      <input type="text" id="title" placeholder="Thread title" required>
+      <textarea id="content" placeholder="Write your message here" rows="4" required></textarea>
+      <button type="submit">Post</button>
+    </form>
+  </div>
+
+  <div id="threads"></div>
+
+  <script>
+    const form = document.getElementById('newPost');
+    const threads = document.getElementById('threads');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const content = document.getElementById('content').value.trim();
+
+      if (!title || !content) return;
+
+      // Placeholder for future moderation logic
+      const thread = document.createElement('div');
+      thread.className = 'thread';
+      thread.innerHTML = `<h4>${title}</h4><p>${content}</p>`;
+      threads.prepend(thread);
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
