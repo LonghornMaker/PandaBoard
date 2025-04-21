@@ -1,54 +1,17 @@
-import { db, storage } from "./firebase-config.js";
-import {
-  ref as dbRef,
-  set,
-  push,
-  serverTimestamp,
-  remove
-} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+// threads.js
+import { db } from './firebase-config.js';
+import { collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
 
-// Function to create a new thread in the database
-export function createThread(content, user, imageURL = null) {
-  const threadsRef = dbRef(db, 'threads/');
-  const newThreadRef = push(threadsRef);
-
-  set(newThreadRef, {
-    content: content,
-    author: user || "Anonymous",
-    timestamp: Date.now(),
-    image: imageURL || null
-  }).then(() => {
+// Function to create a new thread
+export async function createThread(title, content) {
+  try {
+    await addDoc(collection(db, 'threads'), {
+      title: title.trim(),
+      content: content.trim(),
+      timestamp: serverTimestamp(),
+    });
     console.log('Thread created successfully!');
-  }).catch((error) => {
+  } catch (error) {
     console.error('Error creating thread:', error);
-  });
-}
-
-// Function to upload an image to Firebase Storage
-export function uploadImage(file) {
-  const imageRef = storageRef(storage, 'images/' + file.name);
-  return uploadBytes(imageRef, file)
-    .then((snapshot) => {
-      return getDownloadURL(snapshot.ref);
-    })
-    .catch((error) => {
-      console.error('Error uploading image:', error);
-    });
-}
-
-// Function to delete a thread by ID
-export function deleteThread(threadId) {
-  const threadRef = dbRef(db, 'threads/' + threadId);
-  remove(threadRef)
-    .then(() => {
-      console.log("Thread deleted successfully!");
-    })
-    .catch((error) => {
-      console.error("Error deleting thread:", error);
-    });
+  }
 }
