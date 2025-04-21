@@ -17,3 +17,15 @@ export function createThread(content, user, imageURL = null) {
     console.error('Error creating thread:', error);
   });
 }
+
+// Función para subir una imagen a Firebase Storage
+export function uploadImage(file) {
+  const storageReference = storageRef(storage, 'images/' + file.name); // Referencia para la imagen
+  return uploadBytes(storageReference, file)
+    .then((snapshot) => {
+      return getDownloadURL(snapshot.ref);  // Obtiene la URL de la imagen subida
+    })
+    .catch((error) => {
+      console.error('Error uploading image:', error);
+    });
+}
