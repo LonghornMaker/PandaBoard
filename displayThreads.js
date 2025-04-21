@@ -30,3 +30,14 @@ export function displayThreads() {
     }
   });
 }
+
+// Modificación en el botón de borrar
+threadElement.innerHTML = `
+  <h3>${thread.author}</h3>
+  <p>${thread.content}</p>
+  <p><em>Fecha: ${new Date(thread.timestamp).toLocaleString()}</em></p>
+  ${thread.image ? `<img src="${thread.image}" alt="Thread Image" />` : ''}
+  <button onclick="deleteThread('${threadId}')">Borrar Thread</button>
+`;
+
+window.deleteThread = deleteThread;  // Exponer la función deleteThread globalmente
