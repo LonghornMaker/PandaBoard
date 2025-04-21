@@ -1,8 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-import { getStorage } from "firebase/storage";
+// firebase-config.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// Tu configuración de Firebase
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyB5jDNgrpcMdiahjYybj2OxkPUEdM5j29w",
   authDomain: "pandaboard-50656.firebaseapp.com",
@@ -14,9 +14,8 @@ const firebaseConfig = {
   measurementId: "G-X7V8RK5V0H"
 };
 
-// Inicializar Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-// Exportar la base de datos y el almacenamiento
-export const db = getDatabase(app);
-export const storage = getStorage(app);
+export { db };
